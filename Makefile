@@ -20,8 +20,6 @@ SRCS = \
 	src/graph_traversals/*.c \
 	src/hashing/*.c
 
-TARGET = dsa
-
 ifeq ($(OS),Windows_NT)
 	RM = cmd /c del
 	EXE = .exe
@@ -29,6 +27,8 @@ else
 	RM = rm -f
 	EXE =
 endif
+
+TARGET = dsa
 
 all: $(TARGET)
 

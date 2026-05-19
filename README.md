@@ -274,9 +274,6 @@ Invalid input:
 
 ---
 
-If you're curious about the thinking and struggles behind building this — I wrote about it here - https://dev.to/darshan2456/i-refused-to-just-know-what-a-data-structure-is-so-i-built-one-in-c-3dfp
-
-
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
