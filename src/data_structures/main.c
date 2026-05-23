@@ -1,5 +1,6 @@
 #include "data_structures.h"
 #include "advanced_sorting.h"
+#include "safe_input.h"
 #include "expression.h"
 #include "graph_traversals.h"
 #include "hash.h"

@@ -1,4 +1,5 @@
 #include "data_structures.h"
+#include "safe_input.h"
 #include <stdio.h>
 #include <stdlib.h>
 

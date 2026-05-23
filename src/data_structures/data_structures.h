@@ -61,11 +61,6 @@ void delete_dll(doubly_ll_Node* head);
 void dll_demo(void);
 int dll_reverselist(doubly_ll_Node** head_ref);
 
-//For safe input
-int safe_input_int(int* input, const char* prompt, int min_val, int max_val);
-int validate_infix_expr(char* buff, size_t size, const char* prompt);
-int validate_postfix_expr(char* buff, size_t size, const char* prompt);
-
 //For single linked list
 typedef struct Node
 {
