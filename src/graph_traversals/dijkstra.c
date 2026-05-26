@@ -1,0 +1,177 @@
+#include "graph_traversals.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include<limits.h>
+
+int minDistance(int visited[] , int dist[], int size)
+{
+    int minDist = INT_MAX;
+    int u = -1;
+    for(int i = 0 ; i < size ; i++)
+    {
+        if(!visited[i] && dist[i] < minDist)
+        {
+            minDist = dist[i];
+            u = i;
+        }
+    }
+
+    return u;
+}
+
+void dijkstra(weightedGraph* graph, int start)
+{
+    int size = graph->V;
+
+    int visited[size];
+    int dist[size];
+
+    for(int i = 0 ; i < size ; i++)
+    {
+        visited[i] = 0;
+        dist[i] = INT_MAX;
+    }
+
+    dist[start] = 0;
+
+    for(int count = 0 ; count < size - 1 ; count++)
+    {
+        int u = minDistance(visited,dist,size);
+        visited[u] = 1;
+
+        if(u == -1) break;
+        
+        Edge* current = graph->array[u];
+
+        while (current != NULL)
+        {
+            int v = current->destination;
+            int currentWeight = current->weight;
+            if(!visited[v] && dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
+                dist[v] = dist[u] + currentWeight;
+
+            current = current->next;
+        }
+    }
+
+    printf("Start -> Vertex  \t  Distance\n");
+    printf("---------------  \t  --------\n");
+
+    for(int i = 0 ; i < size ; i++)
+    {
+        if(dist[i] == INT_MAX)
+            printf("    %d -> %d  \t            INF   \n",start,i);
+        else
+            printf("    %d -> %d  \t             %d   \n",start,i,dist[i]);
+    }
+}
+
+weightedGraph* create_weightedGraph(int V)
+{
+    weightedGraph* graph = malloc(sizeof(weightedGraph));
+
+    if(!graph)
+        return NULL;
+
+    graph->V = V;
+
+    graph->array = malloc(V*sizeof(Edge*));
+
+    if(!graph->array)
+    {
+        free(graph);
+        return NULL;
+    }
+
+    for(int i = 0 ; i < V ;  i++)
+        graph->array[i] = NULL;
+
+    return graph;
+}
+
+int edge_insertAtEnd(Edge** head, int dest, int weight)
+{
+    Edge* edge = malloc(sizeof(Edge));
+
+    if(!edge)
+        return -1;
+
+    edge->destination = dest;
+    edge->weight = weight;
+    edge->next = NULL;
+    
+    if(*head == NULL)
+    {
+        *head = edge;
+        return 1;
+    }
+
+    Edge* temp = *head;
+
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = edge;
+    return 1;
+}
+
+void add_edge_directed(weightedGraph* graph, int src, int dest, int wt)
+{
+    if(!graph)
+        return;
+
+    if(src < 0 || src >= graph->V || dest < 0 || dest >= graph->V || wt < 0)
+    {
+        printf("Invalid edge: %d -> %d\n", src, dest);
+        exit(0);
+    }
+
+    edge_insertAtEnd(&graph->array[src],dest,wt);
+}
+
+void free_weightedGraph(weightedGraph* graph)
+{
+    if(!graph)
+        return;
+    
+    for(int i = 0 ; i < graph->V ; i++)
+    {
+        Edge* temp = graph->array[i];
+        while (temp != NULL)
+        {
+            Edge* prev = temp;
+            temp = temp->next;
+            free(prev);
+        }
+    }
+
+    free(graph->array);
+    free(graph);
+}
+
+int main()
+{
+    int V;
+    printf("Enter no.of vertices: ");
+    scanf("%d",&V);
+
+    weightedGraph* graph = create_weightedGraph(V);
+
+    int E;
+    printf("Enter no.of edges: ");
+    scanf("%d",&E);
+    int src, dest, wt;
+    for(int i = 0 ; i < E ; i++)
+    {
+        printf("Enter source, destination, weight pair: ");
+        scanf("%d %d %d",&src,&dest,&wt);
+        add_edge_directed(graph,src,dest,wt);
+    }
+
+    int start;
+    printf("Enter the starting node: ");
+    scanf("%d",&start);
+
+    dijkstra(graph,start);
+}   
