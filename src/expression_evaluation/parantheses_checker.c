@@ -2,7 +2,6 @@
 #include "stack.h"
 #include <stdio.h>
 #include <string.h>
-#include <stddef.h>
 
 int check_parantheses(char* s)
 {
@@ -71,21 +70,29 @@ int get_validated_input_parantheses(char* buff, size_t size, const char* prompt)
 
 void parantheses_checker_demo(void)
 {
-    char parantheses_expression[50] = {0};
+    char parantheses_expression[50];
+    while (1)
+    {
+        int status = get_validated_input_parantheses(
+            parantheses_expression,
+            sizeof(parantheses_expression),
+            "\nenter an expression with parantheses, enter 'X' to exit: "
+        );
 
-    int status = get_validated_input_parantheses(
-        parantheses_expression,
-        sizeof(parantheses_expression),
-        "\nenter an expression with parantheses: "
-    );
+        if (status == INPUT_EXIT_SIGNAL)
+        {
+            printf("\nExiting parantheses checker demo.....\n");
+            return;
+        }
 
-    if (status == INPUT_EXIT_SIGNAL || status == 0)
-        return;
+        if (status != 1)
+            continue;
 
-    int result = check_parantheses(parantheses_expression);
+        int result = check_parantheses(parantheses_expression);
 
-    if (result)
-        printf("valid expression balanced parantheses\n");
-    else
-        printf("invalid expression\n");
+        if (result)
+            printf("valid expression balanced parantheses\n");
+        else
+            printf("invalid expression\n");
+    }
 }
