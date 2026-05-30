@@ -1,16 +1,22 @@
+# Variables
+
+# Compiler
 CC = gcc
 
+#Vlagrind flags
 VGFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
 
-CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
-	-Isrc/data_structures \
-	-Isrc/expression_evaluation \
+# Compile flags
+CFLAGS = -Wall -Wextra -Werror -std=c11 -g \ # \ for continue line
+	-Isrc/data_structures \ # -I includes the directory
+	-Isrc/expression_evaluation \ # includes all the src dierctories
 	-Isrc/sorting_algorithms_n2 \
 	-Isrc/advanced_sorting_algorithms \
 	-Isrc/searching_algorithms \
 	-Isrc/graph_traversals \
 	-Isrc/hashing
 
+# source files are all .c files in src
 SRCS = \
 	src/data_structures/*.c \
 	src/expression_evaluation/*.c \
@@ -20,26 +26,34 @@ SRCS = \
 	src/graph_traversals/*.c \
 	src/hashing/*.c
 
-ifeq ($(OS),Windows_NT)
-	RM = cmd /c del
-	EXE = .exe
-else
-	RM = rm -f
+# checks operating system, works for all of these?
+ifeq ($(OS),Windows_NT) # If on windows
+	RM = cmd /c del # rm command in windows
+	EXE = .exe # output file is .exe
+else # if not on windows, i.e. linux, macos, unix
+	RM = rm -f # rm command on linux?
 	EXE =
 endif
 
-TARGET = dsa
+# EXEC / name of the output file, the one we want to run: dsa
+TARGET = dsa 
 
-all: $(TARGET)
+# dafault target, $(target) accesses the target
+all: $(TARGET) # dsa is dependency
 
+# target: we compile dsa, dependencies: all .c source files in src
 $(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)$(EXE)
+	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)$(EXE) # recipe: gcc (compiler flags) (.c files) -o dsa.exe
 
 fmt:
 	find . \( -name "*.c" -o -name "*.h" \) -not -path "*/build/*" | xargs clang-format -i
 
 clean:
-	$(RM) $(TARGET)$(EXE) test_circ_queue$(EXE) test_bst$(EXE) test_search$(EXE) test_hash_func$(EXE) test_sll$(EXE) test_dll$(EXE) test_array$(EXE) test_stack$(EXE)
+ 	$(RM) $(TARGET)$(EXE) test_circ_queue$(EXE) test_bst$(EXE) test_search$(EXE) test_hash_func$(EXE) test_sll$(EXE) test_dll$(EXE) test_array$(EXE) test_stack$(EXE)
+
+# changed clean target to clean TEST_BINS variable
+# clean: 
+#	$(RM) $(TARGET)$(EXE) $(addsuffix $(EXE),$(TEST_BINS))
 
 valgrind:
 	for t in $(TEST_BINS); do \
@@ -97,6 +111,7 @@ STACK_TEST_SRC = \
 	src/data_structures/safe_input_int.c \
 	tests/test_stack.c
 
+# compiles the tests and then runs them
 test_circ_queue:
 	$(CC) $(CFLAGS) $(CIRC_QUEUE_TEST_SRC) -o test_circ_queue$(EXE)
 	./test_circ_queue$(EXE)
@@ -130,7 +145,28 @@ test_stack:
 	./test_stack$(EXE)
 
 
-TEST_BINS=test_circ_queue test_bst test_search test_hash_func test_sll test_dll test_array test_stack
+# TEST_BINS=test_circ_queue test_bst test_search test_hash_func test_sll test_dll test_array test_stack
+# test: $(TEST_BINS)
+
+# changed to 
+TEST_BINS = \
+	test_circ_queue \
+	test_bst \
+	test_search \
+	test_hash_func \
+	test_sll \
+	test_dll \
+	test_array \
+	test_stack
 test: $(TEST_BINS)
 
+# phony targets are not associated with other files, recipe is always executed when called with make
+# specifies which targets shouldn't be considered as files
+# add clean to phony?
+
+# .PHONY: $(TARGET) $(TEST_BINS)
+
 .PHONY: $(TARGET) $(TEST_BINS)
+
+
+# can we replace TARGET with dsa?
