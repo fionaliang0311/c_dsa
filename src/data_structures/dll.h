@@ -18,5 +18,8 @@ int dll_deleteByValue(doubly_ll_Node** head_ref, int key);
 void delete_dll(doubly_ll_Node* head);
 void dll_demo(void);
 int dll_reverselist(doubly_ll_Node** head_ref);
+int dll_getLength(const doubly_ll_Node* head);
+int dll_insertAtPosition(doubly_ll_Node** head_ref, int value, int position);
+int dll_deleteAtPosition(doubly_ll_Node** head_ref, int position);
 
 #endif

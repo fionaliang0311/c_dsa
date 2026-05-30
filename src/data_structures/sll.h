@@ -17,5 +17,8 @@ void sll_Demo(void);
 int sll_search(const Node* head, int key);
 int sll_reverseList(Node** head_ref);
 void delete_sll(Node* head);
+int sll_getLength(const Node* head);
+int sll_insertAtPosition(Node** head_ref, int value, int position);
+int sll_deleteAtPosition(Node** head_ref, int position);
 
 #endif
