@@ -14,6 +14,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
 	-Isrc/graph_traversals \
 	-Isrc/hashing
 
+# source files are all .c files in src
 SRCS = \
 	src/data_structures/*.c \
 	src/expression_evaluation/*.c \
@@ -36,7 +37,8 @@ else
 	EXE =
 endif
 
-TARGET = dsa
+# EXEC / name of the output file, the one we want to run: dsa
+TARGET = dsa 
 
 #all: $(TARGET) 
 all: bld_dir $(TARGET)
@@ -172,6 +174,12 @@ TEST_BINS = \
 	test_tbt
 
 test: $(TEST_BINS)
+
+# phony targets are not associated with other files, recipe is always executed when called with make
+# specifies which targets shouldn't be considered as files
+# add clean to phony?
+
+# .PHONY: $(TARGET) $(TEST_BINS)
 
 # phony targets are not associated with other files, recipe is always executed when called with make
 # specifies which targets shouldn't be considered as files
