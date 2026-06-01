@@ -58,7 +58,8 @@ fmt:
 	find . \( -name "*.c" -o -name "*.h" \) -not -path "*/build/*" | xargs clang-format -i
 
 clean: 
-	$(RM) $(TARGET)$(EXE) $(BLD_DIR) $(addsuffix $(EXE), $(TEST_BINS))
+	$(RM) $(TARGET)$(EXE) $(BLD_DIR)/*.o $(BLD_DIR)/*.d $(addsuffix $(EXE), $(TEST_BINS))
+	rmdir $(BLD_DIR) 2>/dev/null || true
 
 valgrind:
 	for t in $(TEST_BINS); do \
