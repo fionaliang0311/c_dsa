@@ -1,4 +1,4 @@
-#include "data_structures.h" // Includes dll.h
+#include "data_structures.h"
 #include <assert.h>
 #include <stdio.h>
 

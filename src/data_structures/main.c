@@ -1,9 +1,5 @@
 #include "advanced_sorting.h"
 #include "data_structures.h"
-/*
-data_structures.h includes the following,
-array.h, bst.h, circular_queue.h, dll.h, sll.h
-*/
 #include "expression.h"
 #include "graph_traversals.h"
 #include "hash.h"

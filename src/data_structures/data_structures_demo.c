@@ -1,8 +1,4 @@
 #include "data_structures.h"
-/*
-data_structures.h includes the following,
-array.h, bst.h, circular_queue.h, dll.h, sll.h, tbt.h
-*/
 #include "safe_input.h"
 #include <stdio.h>
 
