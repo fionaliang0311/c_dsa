@@ -1,15 +1,10 @@
-# Variables
-
-# Compiler
 CC = gcc
 
-#Vlagrind flags
 VGFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
 
-# Compile flags
-CFLAGS = -Wall -Wextra -Werror -std=c11 -g \ # \ for continue line
-	-Isrc/data_structures \ # -I includes the directory
-	-Isrc/expression_evaluation \ # includes all the src dierctories
+CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
+	-Isrc/data_structures \
+	-Isrc/expression_evaluation \
 	-Isrc/sorting_algorithms_n2 \
 	-Isrc/advanced_sorting_algorithms \
 	-Isrc/searching_algorithms \
@@ -25,26 +20,37 @@ SRCS = \
 	src/graph_traversals/*.c \
 	src/hashing/*.c
 
+BLD_DIR = build
+
+OBJS = $(patsubst $(SRCS/%.c), $(BLD_DIR)/%.o, $(SRCS))
+
 ifeq ($(OS),Windows_NT)
 	RM = cmd /c del
 	EXE = .exe
-else 
+else
 	RM = rm -f
 	EXE =
 endif
 
-TARGET = dsa 
+TARGET = dsa
 
-all: $(TARGET)
+all: bld_dir $(TARGET)
 
-$(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)$(EXE) # recipe: gcc (compiler flags) (.c files) -o dsa.exe
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@
+
+bld_dir:
+	@mkdir -p $(BLD_DIR)
+
+$(BLD_DIR)/%.o: $(SRCS)/%.c
+	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 fmt:
 	find . \( -name "*.c" -o -name "*.h" \) -not -path "*/build/*" | xargs clang-format -i
 
 clean: 
-	$(RM) $(TARGET)$(EXE) $(addsuffix $(EXE),$(TEST_BINS))
+	$(RM) $(TARGET)$(EXE) $(BLD_DIR)/*.o $(BLD_DIR)/*.d $(addsuffix $(EXE), $(TEST_BINS))
+	rmdir $(BLD_DIR) 2>/dev/null || true
 
 valgrind:
 	for t in $(TEST_BINS); do \
@@ -106,16 +112,6 @@ TBT_TEST_SRC = \
 	src/data_structures/safe_input_int.c \
 	src/data_structures/tbt.c \
 	tests/test_tbt.c
-  
-PRIORITY_QUEUE_SRC = \
-	src/data_structures/array.c \
-	src/data_structures/safe_input_int.c \
-	src/data_structures/priority_queue.c \
-	tests/test_priority_queue.c 
-
-test_tbt:
-	$(CC) $(CFLAGS) $(TBT_TEST_SRC) -o test_tbt$(EXE)
-	./test_tbt$(EXE)
 
 test_circ_queue:
 	$(CC) $(CFLAGS) $(CIRC_QUEUE_TEST_SRC) -o test_circ_queue$(EXE)
@@ -149,9 +145,10 @@ test_stack:
 	$(CC) $(CFLAGS) $(STACK_TEST_SRC) -o test_stack$(EXE)
 	./test_stack$(EXE)
 
-test_priority_queue:
-	$(CC) $(CFLAGS) $(PRIORITY_QUEUE_SRC) -o test_priority_queue$(EXE)
-	./test_priority_queue$(EXE)
+test_tbt:
+	$(CC) $(CFLAGS) $(TBT_TEST_SRC) -o test_tbt$(EXE)
+	./test_tbt$(EXE)
+
 
 TEST_BINS = \
 	test_circ_queue \
@@ -162,7 +159,8 @@ TEST_BINS = \
 	test_dll \
 	test_array \
 	test_stack \
-	test_priority_queue
+	test_tbt
+
 test: $(TEST_BINS)
 
-.PHONY: $(TARGET) $(TEST_BINS) clean
+.PHONY: $(TARGET) $(TEST_BINS) bld_dir clean valgrind
