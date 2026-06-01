@@ -12,13 +12,13 @@ CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
 	-Isrc/hashing
 
 SRCS = \
-	src/data_structures/*.c \
-	src/expression_evaluation/*.c \
-	src/sorting_algorithms_n2/*.c \
-	src/advanced_sorting_algorithms/*.c \
-	src/searching_algorithms/*.c \
-	src/graph_traversals/*.c \
-	src/hashing/*.c
+	$(wildcard src/data_structures/*.c) \
+	$(wildcard src/expression_evaluation/*.c) \
+	$(wildcard src/sorting_algorithms_n2/*.c) \
+	$(wildcard src/advanced_sorting_algorithms/*.c) \
+	$(wildcard src/searching_algorithms/*.c) \
+	$(wildcard src/graph_traversals/*.c) \
+	$(wildcard src/hashing/*.c)
 
 BLD_DIR = build
 
