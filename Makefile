@@ -113,6 +113,12 @@ TBT_TEST_SRC = \
 	src/data_structures/tbt.c \
 	tests/test_tbt.c
 
+PRIORITY_QUEUE_SRC = \
+	src/data_structures/array.c \
+	src/data_structures/safe_input_int.c \
+	src/data_structures/priority_queue.c \
+	tests/test_priority_queue.c 
+
 test_circ_queue:
 	$(CC) $(CFLAGS) $(CIRC_QUEUE_TEST_SRC) -o test_circ_queue$(EXE)
 	./test_circ_queue$(EXE)
@@ -149,6 +155,10 @@ test_tbt:
 	$(CC) $(CFLAGS) $(TBT_TEST_SRC) -o test_tbt$(EXE)
 	./test_tbt$(EXE)
 
+test_priority_queue:
+	$(CC) $(CFLAGS) $(PRIORITY_QUEUE_SRC) -o test_priority_queue$(EXE)
+	./test_priority_queue$(EXE)
+
 
 TEST_BINS = \
 	test_circ_queue \
@@ -159,7 +169,8 @@ TEST_BINS = \
 	test_dll \
 	test_array \
 	test_stack \
-	test_tbt
+	test_tbt \
+	test_priority_queue
 
 test: $(TEST_BINS)
 
