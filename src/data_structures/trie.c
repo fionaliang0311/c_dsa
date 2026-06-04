@@ -131,7 +131,11 @@ void trie_demo(void)
                                     1, 4);
 
         if (status == INPUT_EXIT_SIGNAL)
-            break;
+        {
+            trie_free(root);
+            printf("\nexiting trie demo....\n");
+            return;
+        }
         if (status == 0)
             continue;
 
@@ -175,6 +179,4 @@ void trie_demo(void)
         }
     }
 
-    trie_free(root);
-    printf("\nexiting trie demo....\n");
 }
